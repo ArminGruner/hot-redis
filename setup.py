@@ -14,6 +14,7 @@ setup(
     url="http://github.com/stephenmcd/hot-redis",
     packages=find_packages(),
     install_requires=["sphinx-me", "redis"],
+    extras_require={"cluster": ["redis-py-cluster"]},
     zip_safe=False,
     include_package_data=True,
     test_suite="hot_redis.tests",

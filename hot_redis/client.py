@@ -57,6 +57,15 @@ class HotClient(redis.Redis):
         setattr(self, name, method)
 
 
+try:
+    import rediscluster
+
+    class HotClientCluster(rediscluster.RedisCluster, HotClient):
+        pass
+except ImportError:
+    pass
+
+
 _thread = threading.local()
 _config = {}
 
@@ -65,7 +74,8 @@ def default_client():
     try:
         _thread.client
     except AttributeError:
-        setattr(_thread, "client", HotClient(**_config))
+        factory = HotClientCluster if "startup_nodes" in _config else HotClient
+        setattr(_thread, "client", factory(**_config))
     return _thread.client
 
 

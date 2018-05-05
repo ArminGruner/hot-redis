@@ -118,6 +118,23 @@ object::
     >>> client = HotClient(host="myremotehost", port=6380)
     >>> my_queue = Queue(client=client)
 
+If you also install redis-py-cluster, e.g. by
+
+    $ pip install -U hot-redis[cluster]
+
+you may contact a REDIS 3.x cluster by specifying one or more
+startup nodes::
+
+    >>> from hot_redis import configure
+    >>> configure(startup_nodes=({"host": "localhost", port=7000},
+                                 {"host": "localhost", port=7001})
+
+Or, you create a ``HotClientCluster`` instance::
+
+    >>> from hot_redis import HotClientCluster, Queue
+    >>> client = HotClientCluster(startup_nodes=({"host": "localhost", port=7000},
+                                                 {"host": "localhost", port=7001})
+    >>> my_queue = Queue(client=client)
 
 Transactions
 ============
