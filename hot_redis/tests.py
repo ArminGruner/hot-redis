@@ -460,6 +460,17 @@ class DictTests(BaseTestCase):
             del a["hotskull"]
         self.assertRaises(KeyError, del_missing)
 
+    def test_pop(self):
+        a = hot_redis.Dict({"wagwaan": "popcaan", "flute": "don"})
+        v = a.pop("wagwaan")
+        self.assertEqual(v, "popcaan")
+        self.assertRaises(KeyError, lambda: a["wagwaan"])
+        def pop_missing():
+            a.pop("hotskull")
+        self.assertRaises(KeyError, pop_missing)
+        marker = object()
+        self.assertEqual(a.pop("hotskull", marker), marker)
+
     def test_len(self):
         a = {"wagwaan": "popcaan", "flute": "don"}
         b = hot_redis.Dict(a)

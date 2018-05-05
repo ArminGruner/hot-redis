@@ -465,6 +465,15 @@ class Dict(Base):
         value = self.hget(key)
         return value if value is not None else default
 
+    __marker = object()
+
+    def pop(self, key, default=__marker):
+        value = self.get(key, default)
+        if value is self.__marker:
+            raise KeyError(key)
+        self.hdel(key)
+        return value
+
     def has_key(self, key):
         return key in self
 
